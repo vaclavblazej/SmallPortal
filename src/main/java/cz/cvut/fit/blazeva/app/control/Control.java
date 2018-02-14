@@ -3,6 +3,7 @@ package cz.cvut.fit.blazeva.app.control;
 import cz.cvut.fit.blazeva.app.model.Model;
 import cz.cvut.fit.blazeva.app.view.Drawer;
 import cz.cvut.fit.blazeva.app.view.Program;
+import cz.cvut.fit.blazeva.app.view.Window;
 
 import java.io.IOException;
 
@@ -19,6 +20,11 @@ public class Control {
 
     private Program program = new Program();
     private Drawer drawer = new Drawer();
+    private Boolean stopTheWorld = false;
+    private Window.WindowCallback stopCallback = null;
+    private final Object stopSynch = new Object();
+    private Long newWindow = null;
+    private Long window;
 
     private boolean paused = false;
 
@@ -55,18 +61,33 @@ public class Control {
         drawer.draw();
     }
 
-    public void loop(long window) {
+    public void loop(Long window) {
+        this.window = window;
         try {
-            while (!glfwWindowShouldClose(window)) {
+            while (!glfwWindowShouldClose(this.window)) {
                 glfwPollEvents();
                 glViewport(0, 0, fbWidth, fbHeight);
                 Thread.sleep(160);
                 update();
                 render();
-                glfwSwapBuffers(window);
+                glfwSwapBuffers(this.window);
+                if (stopTheWorld) {
+                    synchronized (stopSynch) {
+                        this.window = stopCallback.call();
+                        stopCallback = null;
+                        stopTheWorld = false;
+                    }
+                }
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void stopTheWorld(Window.WindowCallback callback) {
+        synchronized (stopSynch) {
+            stopCallback = callback;
+            stopTheWorld = true;
         }
     }
 

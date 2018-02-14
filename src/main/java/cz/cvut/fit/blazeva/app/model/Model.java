@@ -14,7 +14,7 @@ public class Model {
     public static int height = 600;
     public static int fbWidth = 800;
     public static int fbHeight = 600;
-    public static long window;
+    public static Long window = null;
     public static Scenario scenario = new Scenario();
 
 }
