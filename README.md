@@ -1,10 +1,9 @@
-# Conway's game of life
+# Small Portal
 
 As a demonstration of a simple simulation with **lwjgl**.
 
 ## Description
-The game of life is a simulation on a grid divided into cells.
-The simulation happens in rounds and state of each cell is devised from states of it's neighbours from the previous round.
+Grid based puzzle game with portals.
 
 What will be implemented:
 * stateful grid
