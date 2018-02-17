@@ -65,6 +65,7 @@ public class Control {
         this.window = window;
         try {
             while (!glfwWindowShouldClose(this.window)) {
+                System.out.println("window: " + this.window);
                 glfwPollEvents();
                 glViewport(0, 0, fbWidth, fbHeight);
                 Thread.sleep(160);

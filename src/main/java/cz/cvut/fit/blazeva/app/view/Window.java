@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.IntBuffer;
 
 import static cz.cvut.fit.blazeva.app.model.Model.*;
+import static cz.cvut.fit.blazeva.app.model.Model.window;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
@@ -31,22 +32,9 @@ public class Window {
     private void init() throws IOException {
         if (!glfwInit()) throw new IllegalStateException("Unable to initialize GLFW");
 
-
         setDisplayMode(DisplayMode.WINDOWED_FULLSCREEN);
 
-//        glfwSetCursor(window, glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR));
-
-
-        Model.caps = GL.createCapabilities();
-        if (!Model.caps.OpenGL20) throw new AssertionError("This demo requires OpenGL 2.0.");
-//        debugProc = GLUtil.setupDebugMessageCallback();
-
         control.initialize();
-
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     }
 
     public void registerCallbacks() {
@@ -73,7 +61,7 @@ public class Window {
             if (keyCode == GLFW_KEY_F3 && action == GLFW_RELEASE) {
                 control.stopTheWorld(() -> {
                     setDisplayMode(DisplayMode.WINDOWED_FULLSCREEN);
-                    return window;
+                    return Model.window;
                 });
 //                fullscreen = !fullscreen;
 //                setDisplayMode(fullscreen ? DisplayMode.WINDOWED_FULLSCREEN : DisplayMode.WINDOWED);
@@ -155,6 +143,17 @@ public class Window {
         glfwShowWindow(window);
 
         registerCallbacks();
+
+//        glfwSetCursor(window, glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR));
+//        debugProc = GLUtil.setupDebugMessageCallback();
+
+        Model.caps = GL.createCapabilities();
+        if (!Model.caps.OpenGL20) throw new AssertionError("This demo requires OpenGL 2.0.");
+
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     }
 
     private void destroyAll() {
