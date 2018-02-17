@@ -32,7 +32,7 @@ public class Window {
     private void init() throws IOException {
         if (!glfwInit()) throw new IllegalStateException("Unable to initialize GLFW");
 
-        setDisplayMode(DisplayMode.WINDOWED_FULLSCREEN);
+        setDisplayMode(DisplayMode.WINDOWED);
 
         control.initialize();
     }
@@ -59,12 +59,11 @@ public class Window {
                 glfwSetWindowShouldClose(window, true);
             }
             if (keyCode == GLFW_KEY_F3 && action == GLFW_RELEASE) {
+                fullscreen = !fullscreen;
                 control.stopTheWorld(() -> {
-                    setDisplayMode(DisplayMode.WINDOWED_FULLSCREEN);
+                    setDisplayMode(fullscreen ? DisplayMode.WINDOWED_FULLSCREEN : DisplayMode.WINDOWED);
                     return Model.window;
                 });
-//                fullscreen = !fullscreen;
-//                setDisplayMode(fullscreen ? DisplayMode.WINDOWED_FULLSCREEN : DisplayMode.WINDOWED);
             }
             if (action == GLFW_PRESS) {
                 control.key.tap(keyCode);
@@ -120,11 +119,11 @@ public class Window {
                 monitorSetting = monitor;
                 break;
             case WINDOWED_FULLSCREEN:
-//                glfwWindowHint(GLFW_RED_BITS, videoMode.redBits());
-//                glfwWindowHint(GLFW_GREEN_BITS, videoMode.greenBits());
-//                glfwWindowHint(GLFW_BLUE_BITS, videoMode.blueBits());
-//                glfwWindowHint(GLFW_REFRESH_RATE, videoMode.refreshRate());
-                monitorSetting = 0L;
+                glfwWindowHint(GLFW_RED_BITS, videoMode.redBits());
+                glfwWindowHint(GLFW_GREEN_BITS, videoMode.greenBits());
+                glfwWindowHint(GLFW_BLUE_BITS, videoMode.blueBits());
+                glfwWindowHint(GLFW_REFRESH_RATE, videoMode.refreshRate());
+                monitorSetting = monitor;
                 break;
             case WINDOWED:
             default:

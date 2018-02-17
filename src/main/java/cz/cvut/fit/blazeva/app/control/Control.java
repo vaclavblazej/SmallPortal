@@ -48,7 +48,6 @@ public class Control {
         if (mouse.isDown(GLFW_MOUSE_BUTTON_LEFT)) {
             int bx = (int) ((Model.mouseX + 0.685) * 20 / 0.685);
             int by = (int) ((Model.mouseY + 0.92) * 20 / 0.92);
-            System.out.println(bx + " " + by);
             Model.scenario.toggle(bx, by);
         }
     }
@@ -65,7 +64,6 @@ public class Control {
         this.window = window;
         try {
             while (!glfwWindowShouldClose(this.window)) {
-                System.out.println("window: " + this.window);
                 glfwPollEvents();
                 glViewport(0, 0, fbWidth, fbHeight);
                 Thread.sleep(160);
